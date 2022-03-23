@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 const ClientError = require('../../exceptions/ClientError');
 
 class SongsHandler {
@@ -61,8 +62,67 @@ class SongsHandler {
     }
   }
 
-  async getSongsHandler() {
+  async getSongsHandler(request, h) {
+    const { title, performer } = request.query;
     const songs = await this._service.getSongs();
+
+    if (title !== undefined && performer !== undefined) {
+      const songsByQuery = songs.filter((song) => {
+        return song.title.toLowerCase().includes(title.toLowerCase())
+        && song.performer.toLowerCase().includes(performer.toLowerCase());
+      });
+      const response = h.response({
+        status: 'success',
+        data: {
+          songs: songsByQuery.map((songByQuery) => ({
+            id: songByQuery.id,
+            title: songByQuery.title,
+            performer: songByQuery.performer,
+          })),
+        },
+      });
+      response.code(200);
+      return response;
+    }
+
+    if (title !== undefined) {
+      const songsByTitle = songs.filter((song) => {
+        return song.title.toLowerCase().includes(title.toLowerCase());
+      });
+
+      const response = h.response({
+        status: 'success',
+        data: {
+          songs: songsByTitle.map((songByTitle) => ({
+            id: songByTitle.id,
+            title: songByTitle.title,
+            performer: songByTitle.performer,
+          })),
+        },
+      });
+      response.code(200);
+      return response;
+    }
+
+    if (performer !== undefined) {
+      const songsByPerformer = songs.filter((song) => {
+        return song.performer.toLowerCase().includes(performer.toLowerCase());
+      });
+
+      const response = h.response({
+        status: 'success',
+        data: {
+          songs: songsByPerformer.map((songByPerformer) => ({
+            id: songByPerformer.id,
+            title: songByPerformer.title,
+            performer: songByPerformer.performer,
+          })),
+        },
+      });
+      response.code(200);
+      return response;
+    }
+
     return {
       status: 'success',
       data: {
