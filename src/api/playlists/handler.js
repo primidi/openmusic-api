@@ -233,11 +233,6 @@ class PlaylistsHandler {
       await this._playlistsService.verifyPlaylistAccess(playlistId, credentialId);
 
       const activities = await this._playlistsService.getPlaylistActivities(playlistId);
-      console.log({
-        credentialId,
-        playlistId,
-        activities,
-      });
       return {
         status: 'success',
         data: {
