@@ -52,7 +52,7 @@ class AlbumsHandler {
   async getAlbumsHandler(request, h) {
     try {
       const albums = await this._service.getAlbums();
-  
+
       return {
         status: 'success',
         data: {

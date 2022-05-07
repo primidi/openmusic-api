@@ -1,4 +1,4 @@
-const mapDbToModel = ({
+const mapSongDbToModel = ({
   id,
   title,
   year,
@@ -16,4 +16,28 @@ const mapDbToModel = ({
   albumId: album_id,
 });
 
-module.exports = mapDbToModel;
+const mapPlaylistDbToModel = ({
+  id,
+  name,
+  username,
+}) => ({
+  id,
+  name,
+  username,
+});
+
+const mapNestedSongs = ({
+  song_id,
+  song_title,
+  performer,
+}) => ({
+  id: song_id,
+  title: song_title,
+  performer,
+});
+
+module.exports = {
+  mapSongDbToModel,
+  mapPlaylistDbToModel,
+  mapNestedSongs,
+};

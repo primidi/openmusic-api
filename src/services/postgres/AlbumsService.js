@@ -1,7 +1,8 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
-const InvariantError = require('../exceptions/InvariantError');
-const NotFoundError = require('../exceptions/NotFoundError');
+const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
+const { mapNestedSongs } = require('../../utils');
 
 class AlbumsService {
   constructor() {
@@ -32,7 +33,8 @@ class AlbumsService {
 
   async getAlbumById(id) {
     const query = {
-      text: 'SELECT * FROM albums WHERE id = $1',
+      text: `SELECT albums.*, songs.id as song_id, songs.title as song_title, songs.performer
+      FROM albums LEFT JOIN songs ON songs.album_id = albums.id WHERE albums.id = $1`,
       values: [id],
     };
 
@@ -42,7 +44,13 @@ class AlbumsService {
       throw new NotFoundError('Album not found.');
     }
 
-    return result.rows[0];
+    const albums = result.rows[0];
+    const songs = result.rows.map(mapNestedSongs);
+
+    return {
+      ...albums,
+      songs,
+    };
   }
 
   async editAlbumById(id, { name, year }) {
