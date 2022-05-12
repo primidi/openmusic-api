@@ -1,3 +1,15 @@
+const mapAlbumDbToModel = ({
+  id,
+  name,
+  year,
+  cover,
+}) => ({
+  id,
+  name,
+  year,
+  coverUrl: cover,
+});
+
 const mapSongDbToModel = ({
   id,
   title,
@@ -37,6 +49,7 @@ const mapNestedSongs = ({
 });
 
 module.exports = {
+  mapAlbumDbToModel,
   mapSongDbToModel,
   mapPlaylistDbToModel,
   mapNestedSongs,

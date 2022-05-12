@@ -2,7 +2,7 @@ const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
-const { mapNestedSongs } = require('../../utils');
+const { mapNestedSongs, mapAlbumDbToModel } = require('../../utils');
 
 class AlbumsService {
   constructor() {
@@ -44,7 +44,7 @@ class AlbumsService {
       throw new NotFoundError('Album not found.');
     }
 
-    const albums = result.rows[0];
+    const albums = result.rows.map(mapAlbumDbToModel)[0];
     const songs = result.rows.map(mapNestedSongs);
 
     return {
