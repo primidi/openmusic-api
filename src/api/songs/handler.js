@@ -66,7 +66,7 @@ class SongsHandler {
     try {
       const { title, performer } = request.query;
       const songs = await this._service.getSongs();
-  
+
       if (title !== undefined && performer !== undefined) {
         const songsByQuery = songs.filter((song) => {
           return song.title.toLowerCase().includes(title.toLowerCase())
@@ -85,12 +85,12 @@ class SongsHandler {
         response.code(200);
         return response;
       }
-  
+
       if (title !== undefined) {
         const songsByTitle = songs.filter((song) => {
           return song.title.toLowerCase().includes(title.toLowerCase());
         });
-  
+
         const response = h.response({
           status: 'success',
           data: {
@@ -104,12 +104,12 @@ class SongsHandler {
         response.code(200);
         return response;
       }
-  
+
       if (performer !== undefined) {
         const songsByPerformer = songs.filter((song) => {
           return song.performer.toLowerCase().includes(performer.toLowerCase());
         });
-  
+
         const response = h.response({
           status: 'success',
           data: {
@@ -123,7 +123,7 @@ class SongsHandler {
         response.code(200);
         return response;
       }
-  
+
       return {
         status: 'success',
         data: {
